@@ -25,6 +25,7 @@ knitr::opts_chunk$set(echo = FALSE, message=FALSE, warning=FALSE)
 require(marindicators)
 require(azmpdata)
 # require(Mar.fleets)
+# remotes::install_github("casaultb/azmpdata")
 require(knitr)
 require(kableExtra)
 require(tidyverse)
@@ -46,17 +47,28 @@ require(officer)
 require(devtools)
 require(usethis)
 require(remotes)
+require(marea)
 #usethis::edit_r_environ()
-remotes::install_github("jamiectam/MAReco")
+# remotes::install_github("jamiectam/MAReco")
 # remotes::install_github("MarEcosystemApproaches/marea")
 require(MAReco)
 require(Mar.data)
 require(sf)
+require(glue)
+```
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE, include=FALSE}
+# set area
+
+area<-("NAFO 4X")
+azmpline<-("Browns Bank Line")
+azmpstation<-("Prince 5")
+
 ```
 
 \newpage
 
-```{r, echo = FALSE, out.width="75%", fig.align="center", fig.cap="The NAFO 4X Management area."}
+```{r, echo = FALSE, out.width="50%", fig.align="center", fig.cap= glue::glue("The {area} Management area in blue, the orange point is {azmpstation} station.")}
 #integrate new map
 dat.dir<-here::here("data")
 coast<-"coast_sf.rda"
@@ -67,6 +79,12 @@ load(file.path(dat.dir, NAFOSubunits_sf))
 
 bbox_coords <- c(xmin = -72, xmax = -58, ymin = 39, ymax = 47)
 
+# Create a point as an sf object
+p5_point <- st_as_sf(data.frame(
+  lon = -66.8495,
+  lat = 44.9307
+), coords = c("lon", "lat"), crs = 4326)  # Assuming WGS84
+
 # Create a map of NAFO 4X
 mar_nafo4X<-NAFOSubunits_sf |> 
   filter(NAFO_1 %in% c("4X"))
@@ -75,10 +93,12 @@ mar_nafo4X<-NAFOSubunits_sf |>
 nafomap_4X<-ggplot()+
   geom_sf(data=mar_nafo4X, color="blue", fill="blue")+
   geom_sf(data=coast, colour="black",  fill="light grey")+
+  geom_sf(data = p5_point, color = "orange", size = 3)+
   coord_sf(xlim = c(bbox_coords["xmin"], bbox_coords["xmax"]),
            ylim = c(bbox_coords["ymin"], bbox_coords["ymax"]),
            expand = FALSE) +
   theme_light()
+
 
 nafomap_4X
 
@@ -87,11 +107,16 @@ nafomap_4X
 # Introduction {#introduction}
 
 ### About this report
-This Ecosystem Summary Report provides the ecosystem context to support an Ecosystem Approach at DFO that includes Ecosystem Approaches to Fisheries Management ([EAFM](https://www.dfo-mpo.gc.ca/fisheries-peches/initiatives/ecosystems-approach-approche-ecosystemique/index-eng.html) [2019; Bill C-68](https://lop.parl.ca/sites/PublicWebsite/default/en_CA/ResearchPublications/LegislativeSummaries/421C68E)) and Ecosystem Based Fisheries Management ([EBFM](https://sites.google.com/view/maritimesebfmwg/home)). It aligns objectives broadly to those of the [Maritimes Ecosystem Based Management Framework](https://sites.google.com/view/ebminitiative/ebm-initiative-home) and regional/area-based objectives that contribute to Scientific Advice and Management Plans or other Harvest Strategies and liked to a suite of ecosystem indicators (Table 1). The trends and the status of ecosystem indicators are reported relative to a reference point (if available) or a long-term average. The results are synthesized to outline potential implications for the management area examined, but not specifically related to a focal stock or species.
+This Ecosystem Summary Report provides the ecosystem context to support Fisheries and Oceans Canada's Ecosystem Approach, which includes Ecosystem Approaches to Fisheries Management ([EAFM](https://www.dfo-mpo.gc.ca/fisheries-peches/initiatives/ecosystems-approach-approche-ecosystemique/index-eng.html) [2019; Bill C-68](https://lop.parl.ca/sites/PublicWebsite/default/en_CA/ResearchPublications/LegislativeSummaries/421C68E)) and Ecosystem-Based Fisheries Management ([EBFM](https://sites.google.com/view/maritimesebfmwg/home)). It aligns objectives broadly to those of the [Maritimes Ecosystem-Based Management Framework](https://sites.google.com/view/ebminitiative/ebm-initiative-home) and regional/area-based objectives that contribute to Scientific Advice and Management Plans or other Harvest Strategies and uses a suite of indicators that are used to describe the ecosystem (Table 1). The trends and the status of ecosystem indicators are reported relative to a reference point (if available) or a long-term average. The results are synthesized to outline potential implications for the management area examined and not specifically related - but can be applied - to a focal stock or species. 
 
 # Overview {#overview}
-- The NAFO 4X region is experiencing a cooling period
+- The North Atlantic as a whole is experiencing a warm phase, with SST and bottom temperature above the long-term means. There has been some recent cooling in the `r (area)` region since 2022.  
 
+- Salinity has decreased since the 1990s and mean stratification has increased on the Scotian Shelf. Nutrient availability has decreased since 2010, the onset of the latest warming period. 
+
+- Although chlorophyll is within mean range, zooplankton biomass has been below the long-term mean in recent years.
+
+- The Large Fish Indicator has been below the long term mean since 2014, indicating that structure and functioning of `r (area)` ecosystem is more dominated by smaller fish and invertebrates. Species evenness has decreased, also indicating fewer, dominant species.  Fish biomass is generally below long-term mean over the latest 5 years of data, although landings and fishing pressure have generally decreased in `r (area)` over time. 
 
 
 \newpage
@@ -101,16 +126,16 @@ The Ecosystem objectives outline the ecosystem context and considerations for th
 
 ```{r , echo=FALSE, tab.cap="Ecosystem objectives related to EBM Framework Pillar, Management Components, and Indicators." }
 #change in .csv file, then import and save as .Rdata for consistent use with flextable
-# save(NAFO4VSesr_objectives, file=here("data", "NAFO4VSesr_objectives.Rdata"))
+# save(NAFO4Xesr_objectives, file=here("data", "NAFO4Xesr_objectives.Rdata"))
 
 dat.dir<-here::here("data")
-NAFO4VSesr_objectives<- "NAFO4VSesr_objectives.Rdata"
-  load(file.path(dat.dir, NAFO4VSesr_objectives))
+NAFO4Xesr_objectives<- "NAFO4Xesr_objectives.Rdata"
+  load(file.path(dat.dir, NAFO4Xesr_objectives))
   
 # set_flextable_defaults(font.size = 9, padding = 1, na_str="na")
 # options(flextable.print = Inf)
 # 
-Table_EO<- as.data.frame(NAFO4VSesr_objectives)
+Table_EO<- as.data.frame(NAFO4Xesr_objectives)
 
 #change variable in the table
 # Table_EO <- Table_EO|>
@@ -133,29 +158,57 @@ ERtable
 # A. Pressures and Stressors {#pressuresandstressors}
 
 ## Climate and oceanography 
-The management area is strongly influenced by natural variability of the climate system (e.g., North Atlantic Oscillation) and, therefore, long-term monitoring is needed to determine how anthropogenic climate change is affecting ocean temperatures. 
+The management area is strongly influenced by natural variability of the climate system (e.g., Atlantic Multidecadal Oscillation, North Atlantic Oscillation) and, therefore, long-term monitoring is needed to determine how anthropogenic climate change is affecting ocean temperatures and other ocean properties. 
 
 Changes in climate can directly and indirectly impact stock status by affecting the distribution, seasonal timing, physiology, migration and spawning of marine species.
 
-### North Atlantic Oscillation Index
-[Hebert et al. 2024](https://publications.gc.ca/collections/collection_2024/mpo-dfo/Fs97-18-380-eng.pdf) (see Section 2.1)
+### Atlantic Multidecadal Oscillation (AMO)
 
-```{r ,fig.align="center", echo = FALSE,fig.pos='H', fig.width = 5, fig.height=3,fig.cap="The North Atlantic Oscillation (NAO) index, defined as the winter (December, January, February, March) 500 mb pressure Principal Component Analysis which is representative of the difference between the Icelandic low and Azores high. Climatological mean is shown as the dashed line, solid lines are ± standard deviation (SD)."}
+The AMO describes long-duration changes in the sea surface temperature of the North Atlantic Ocean, with cool and warm phases that may last for 20-40 years.
 
-dat.dir<-here::here("data")
-dd <- "dd_nao_.Rdata"
-  load(file.path(dat.dir, dd))
+```{r ,fig.align="center", echo = FALSE,fig.pos='H', fig.width = 5, fig.height=3,fig.cap="Atlantic Multidecdal Oscillation (AMO), the average anomalies of SST in the North Atlantic basin."}
 
-  mean_value <- 0.08
-  sd_value <- 0.37
-  nao<-dd[["data"]]
+AMO<-marea::amo
 
-  nao01<-plot_nao(nao, year, nao, mean_value, sd_value, y_label = "NAO" )
-  nao01
+pamo<-plot(amo, style="anomaly")+
+  labs(
+    title = "AMO", y = "AMO"
+  )
+
+pamo
 
 ```
 
-- In 2023, the winter (December–March) North Atlantic Oscillation (NAO) index was below the 1991 – 2020 mean, –0.31 (–0.84 SD). A high NAO index corresponds to an intensification of the pressure difference between the Icelandic Low and the Azores High. Strong northwest winds, cold air and sea temperatures, and heavy ice in the Labrador Sea and on the NL shelf areas, are usually associated with a high positive NAO index ([Colbourne et al. 1994](https://www.researchgate.net/profile/E-Colbourne-2/publication/281064239_Climatic_changes_and_environmental_conditions_in_the_Northwest_Atlantic_1970-1993/links/55d31fc508aec1b0429f2dee/Climatic-changes-and-environmental-conditions-in-the-Northwest-Atlantic-1970-1993.pdf); Drinkwater 1996). The opposite response (warm, salty conditions) occurs during years with a negative NAO index ([Petrie 2007](https://www.tandfonline.com/doi/abs/10.3137/ao.450302)). 
+- The North Atlantic is currently in a warm phase, since the 1990s. 
+
+\newpage
+### North Atlantic Oscillation Index
+[Layton et al. 2025](https://publications.gc.ca/collections/collection_2025/mpo-dfo/Fs97-18-403-eng.pdf) (see Section 2.1)
+
+```{r ,fig.align="center", echo = FALSE,fig.pos='H', fig.width = 5, fig.height=3,fig.cap="The North Atlantic Oscillation (NAO) index, defined as the winter (December, January, February, March) 500 mb pressure Principal Component Analysis which is representative of the difference between the Icelandic low and Azores high. Climatological mean is shown as the dashed line, solid lines are ± standard deviation (SD)."}
+
+
+NAO<-marea::nao
+
+  mean_value <- 0.08
+  sd_value <- 0.37
+
+  pnao<-plot(NAO) +
+    geom_hline(yintercept = mean_value,
+        color = "darkgreen", linetype = "dashed") +
+        geom_hline(yintercept = mean_value +  sd_value, color = "darkgreen") +
+        geom_hline(yintercept = mean_value - sd_value, color = "darkgreen") +
+    labs(
+      y = "NAO"
+    )
+
+pnao
+
+```
+
+- The NAO has been above the 1991-2020 mean since 2014.
+
+- A high NAO index corresponds to an intensification of the pressure difference between the Icelandic Low and the Azores High. Strong northwest winds, cold air and sea temperatures, and heavy ice in the Labrador Sea and on the NL shelf areas, are usually associated with a high positive NAO index ([Colbourne et al. 1994](https://www.researchgate.net/profile/E-Colbourne-2/publication/281064239_Climatic_changes_and_environmental_conditions_in_the_Northwest_Atlantic_1970-1993/links/55d31fc508aec1b0429f2dee/Climatic-changes-and-environmental-conditions-in-the-Northwest-Atlantic-1970-1993.pdf); [Drinkwater 1996](https://journal.nafo.int/Portals/0/1996/drinkwater.pdf)). The opposite response (warm, salty conditions) occurs during years with a negative NAO index ([Petrie 2007](https://www.tandfonline.com/doi/abs/10.3137/ao.450302)). 
 
 - The NAO has been shown to strongly affect bottom temperature distributions throughout the region from the Labrador Shelf to the Gulf of Maine ([Petrie 2007](https://www.tandfonline.com/doi/abs/10.3137/ao.450302)). The response is bimodal, the product of direct and advective effects, with positive (negative) NAO generally corresponding to colder- (warmer-) than-normal bottom temperatures over the Labrador-Newfoundland Shelf, the Gulf of St. Lawrence, and the Eastern Scotian Shelf, and warmer- (colder-) than-normal conditions on the Central and Western Scotian Shelf and in the Gulf of Maine. 
 
@@ -163,131 +216,193 @@ dd <- "dd_nao_.Rdata"
 ### Sea Surface Temperature Anomaly
 Temperature anomalies are the deviations from the long-term means, or as standardized anomalies they are the anomaly divided by the Standard Deviation (SD). If the data permit, the long-term means and SDs are calculated for the 30-year base period of 1991–2020. The use of standardized anomalies and the same base period allow direct comparison of anomalies among sites and variables.
 
-[Hebert et al. 2024](https://publications.gc.ca/collections/collection_2024/mpo-dfo/Fs97-18-380-eng.pdf) (see Section 3)
+[Layton et al. 2025](https://publications.gc.ca/collections/collection_2025/mpo-dfo/Fs97-18-403-eng.pdf) (see Section 3)
 
-```{r,fig.show='hold',fig.align="center", fig.pos='H', echo = FALSE, fig.cap="The annual sea-surface-temperature normalized anomaly for NAFO regions within the NAFO4VS derived from satellite imagery compared to their long-term monthly means. Horizontal solid lines represent ± standard deviation (SD) for the 1991-2020 period. Regime shift analysis results from running the method forwards and backwards on the time series depicted by the blue and red horizontal lines, respectively. "}
+```{r,fig.show='hold',fig.align="center", echo = FALSE,fig.width = 5, out.width="70%", fig.cap="The annual sea-surface-temperature normalized anomaly for for management area derived from satellite imagery compared to their long-term monthly means. The dashed lines are the longterm mean, and solid lines represent plus or minus 0.5 SD for the 1991-2020 period. Regime shift analysis results from running the method forwards and backwards on the time series depicted by the blue and red horizontal lines, respectively. "}
 
 dat.dir<-here::here("data")
-dd4Vs <- "dd_sstSatellite_4Vs.Rdata"
-  load(file.path(dat.dir, dd4Vs))
-ff4Vs <- "ff_sstSatellite_4Vs.Rdata"
-  load(file.path(dat.dir, ff4Vs))
-bb4Vs <- "bb_sstSatellite_4Vs.Rdata"
-  load(file.path(dat.dir, bb4Vs))
+dd4XeGoMBoF <- "dd_sstSatellite_4XeGoMBoF.Rdata"
+  load(file.path(dat.dir, dd4XeGoMBoF))
+ff4XeGoMBoF <- "ff_sstSatellite_4XeGoMBoF.Rdata"
+  load(file.path(dat.dir, ff4XeGoMBoF))
+bb4XeGoMBoF <- "bb_sstSatellite_4XeGoMBoF.Rdata"
+  load(file.path(dat.dir, bb4XeGoMBoF))
   
-  mean_value4Vs <- 0
-  sd_value4Vs <- 0.5
-  sstSatellite4Vs<-dd[["data"]]
+  mean_value4XeGoMBoF <- 0
+  sd_value4XeGoMBoF <- 0.5
+  sstSatellite4XeGoMBoF<-dd[["data"]]
   
-  psstSatellite4Vs<-MAReco::plot_temperature_anomaly(sstSatellite4Vs, year, normalizedAnomaly, mean_value4Vs, sd_value4Vs, ff, bb, y_label = "4Vs SST Anomaly" )   
+    psstSatellite4XeGoMBoF<-MAReco::plot_temperature_anomaly(sstSatellite4XeGoMBoF, year, anomaly, mean_value4XeGoMBoF, sd_value4XeGoMBoF, ff, bb, y_label = "4XeGoMBoF SST Anomaly" ) 
   
+ dat.dir<-here::here("data")
+dd4XSS <- "dd_sstSatellite_4XSS.Rdata"
+  load(file.path(dat.dir, dd4XSS))
+ff4XSS <- "ff_sstSatellite_4XSS.Rdata"
+  load(file.path(dat.dir, ff4XSS))
+bb4XSS <- "bb_sstSatellite_4XSS.Rdata"
+  load(file.path(dat.dir, bb4XSS))
   
-psstSatellite4Vs
+  mean_value4XSS <- 0
+  sd_value4XSS <- 0.5
+  sstSatellite4XSS<-dd[["data"]]
+  
+  psstSatellite4XSS<-MAReco::plot_temperature_anomaly(sstSatellite4XSS, year, anomaly, mean_value4XSS, sd_value4XSS, ff, bb, y_label = "4XSS SST Anomaly" ) 
+  
+(psstSatellite4XeGoMBoF/psstSatellite4XSS)
   
 ```
 
-- The annual SST anomalies during 2023 were higher than average and SST remained above normal, with the last four years being the four warmest years in the NAFO 4VS. A regime shift algorithm to detect a step change using mean levels was applied to the annual time-series ([Rodionov 2004](https://doi.org/10.1029/2004GL019448)). Over the length of the record, the temperature has three distinct periods at all regions, a relatively cooler period from 1982 to 1993, near the climatological mean from 1994 to 2011, and a relatively warmer period from 2012 to present.
+- The annual anomaly during `r max(sstSatellite4XeGoMBoF$year, na.rm=TRUE)` was `r tail(sstSatellite4XeGoMBoF$temperature, 1)`◦C in eastern Gulf of Maine/Bay of Fundy and `r tail(sstSatellite4XSS$temperature, 1)`◦C in `r (area)` on the Scotian Shelf. SST remained above normal, with the last three years being the three warmest years in 4XSS. `r(area)` eastern Gulf of Maine/Bay of Fundy remained above normal, but was cooler than the previous two years. A regime shift algorithm to detect a step change using mean levels was applied to the annual time-series ([Rodionov 2004](https://doi.org/10.1029/2004GL019448)). Over the length of the record, the temperature has three distinct periods at all regions, a relatively cooler period from 1982 to 1993, near the climatological mean from 1994 to 2011, and a relatively warmer period from 2012 to present.
+
 
 \newpage 
 ### Bottom Temperature Anomaly
-[Hebert et al. 2024](https://publications.gc.ca/collections/collection_2024/mpo-dfo/Fs97-18-380-eng.pdf) (see Section 8.2)
+[Layton et al. 2025](https://publications.gc.ca/collections/collection_2025/mpo-dfo/Fs97-18-403-eng.pdf) (see Section 8.2)
 
-```{r,fig.align="center", echo = FALSE, fig.pos='H', fig.cap="Time series of July bottom-temperature anomalies for NAFO regions within the NAFO4VS. The dashed horizontal line is the 1991-2020 mean and solid lines represent ± standard deviation (SD). Regime shift analysis results from running the method forwards and backwards on the time series depicted by the blue and red horizontal lines, respectively."}
-  
-dd4Vs <- "dd_bottomt_4Vs.Rdata"
-  load(file.path(dat.dir, dd4Vs))
-ff4Vs <- "ff_bottomt_4Vs.Rdata"
-  load(file.path(dat.dir, ff4Vs))
-bb4Vs <- "bb_bottomt_4Vs.Rdata"
-  load(file.path(dat.dir, bb4Vs))
-  
-  mean_value4Vs <- 0
-  sd_value4Vs <- 0.5
-  bottomt4Vs<-dd[["data"]]
-  
-  pbottomt4Vs<-MAReco::plot_temperature_anomaly(bottomt4Vs, year, normalizedAnomaly, mean_value4Vs, sd_value4Vs, ff, bb, y_label = "4Vs Bottom Temp Anomaly" )   
+```{r nafo4xBTanomaly,fig.align="center", echo = FALSE, fig.width = 7,fig.pos='H', out.width="60%", fig.cap="Time series of July bottom-temperature anomalies (thin lines with circles) and five-year-running-mean filtered series (heavy line). The dashed line is the 1991-2020 mean and solid lines represent ±0.5 SD. Regime shift analysis results from running the method forwards and backwards on the time series depicted by the blue and red horizontal lines, respectively."}
 
+dat.dir<-here::here("data")
+dd <- "dd_BottomT_4X.Rdata"
+  load(file.path(dat.dir, dd))
+ff <- "ff_BottomT_4X.Rdata"
+  load(file.path(dat.dir, ff))
+bb <- "bb_BottomT_4X.Rdata"
+  load(file.path(dat.dir, bb))
   
-pbottomt4Vs
+  mean_value <- 0
+  sd_value <- 0.5
+  BottomT<-dd[["data"]]
+  
+  pbottomt4X<-plot_temperature_anomaly(BottomT, year, anomaly, mean_value, sd_value, ff, bb, y_label = "Bottom Temperature Anomaly" )
+  
+
+pbottomt4X
 
 ```
-- The near-bottom temperature anomalies for 2023 in NAFO 4VS are in the normal range in 2022-2023 following an elevated period of bottom temperatures from years 2010-2021.
+- The near-bottom temperature anomalies for `r max(BottomT$year, na.rm=TRUE)` in `r (area)` are in the mean range following an elevated period of bottom temperatures from years 2010-2021.
+
 
 \newpage
 ### Sea Surface Temperature (SST), Bottom Temperature
 [Casault et al. 2020](https://casaultb.github.io/azmpdata/)
-```{r, echo = FALSE, fig.align="center", fig.height=8,fig.width=10, fig.pos='H', fig.cap="Sea Surface Temperature from satellite and Bottom temperature from fixed stations for 4Vs. Dashed lines denote long-term means, solid green lines denote ± standard deviation (SD) from the available timeseries. Purple, shaded areas represent the latest 5 years of available, robust data. Yellow and blue dots are measurements above or below the long-term means, respectively."}
+```{r, echo = FALSE, fig.align="center", fig.height=8,fig.width=10, fig.pos='H', fig.cap=glue::glue("Sea Surface Temperature from satellite and Bottom temperature from fixed stations for {area}. Dashed lines denote climatological means from 1991-2020, solid green lines denote ± standard deviation (SD) from the available timeseries. Purple, shaded areas represent the latest 5 years of available, robust data. Yellow and blue dots are measurements above or below the long-term means, respectively.")}
   
- #azmpdata::Derived_Annual_Broadscale
 
-  SST_ind_4Vs<-azmpdata::Derived_Annual_Broadscale |>
-        filter(area=="4Vs")|>
+  SST_ind_4X<-azmpdata::Derived_Annual_Broadscale |>
+        filter(area=="4XSS")|>
         select(YEAR=year,SST=sea_surface_temperature_from_satellite)
-  
 
- BottomT_ind_4Vs<-azmpdata::Derived_Annual_Broadscale |>
-        filter(area=="4Vs") |>
+
+ BottomT_ind_4X<-azmpdata::Derived_Annual_Broadscale |>
+        filter(area=="4X") |>
         select(YEAR=year, Bottom_Temp=temperature_at_sea_floor)
+ # SST_p5<- azmpdata::Derived_Annual_Stations |> 
+ #   filter (station=="P5") |> 
+ #   select(year, SST=temperature_0)
 
 
-pSST_4Vs<-plot_indicator(SST_ind_4Vs, YEAR, SST, y_label= "4Vs SST") 
+pSST_4X<-plot_indicator_ref_period(SST_ind_4X, YEAR, SST, y_label= "4X SST") 
+# pSST_p5<-plot_indicator(SST_p5, year, SST, y_label="P5 SST") 
 
 
-pbt_4Vs<-plot_indicator(BottomT_ind_4Vs, YEAR, Bottom_Temp, y_label="4Vs Bottom Temp")
+pbt_4X<-plot_indicator_ref_period(BottomT_ind_4X, YEAR, Bottom_Temp, y_label="4X Bottom Temp")
 
+# period_sst<- SST_ind_4X |> filter(YEAR>1990 & YEAR<2021)
+# sst_ref_mean<-mean(period_sst$SST, na.rm=TRUE)
+# period_bt<- BottomT_ind_4X |> filter(YEAR>1990 & YEAR<2021)
+# bt_ref_mean<-mean(period_bt$Bottom_Temp, na.rm=TRUE)
   
-(pSST_4Vs)/(pbt_4Vs)
+(pSST_4X)/(pbt_4X)
 
 ```
 - Over the past two decades, the Scotian Shelf has incurred rapid warming due to the increased dominance of Warm Slope Water. 
 
-- SST in NAFO 4VS between 2020-2024 is above the reference period mean (1991-2020), indicating above average sea temperatures in the NAFO 4VS over recent years. 
+- SST in `r (area)` in `r max(SST_ind_4X$YEAR, na.rm=TRUE)` is within the long-term mean range, indicating above average sea temperatures in the `r (area)` over recent years. 
 
-- Bottom temperature in the 2023-2024 period in NAFO 4VS is near the period mean indicating a recent cooling period after record warm bottom temperatures from 2012-2020 in the management area.
+- Bottom temperature in `r max(BottomT_ind_4X$YEAR, na.rm=TRUE)` in `r (area)` is near the long-term mean indicating a recent cooling period after record warm bottom temperatures from 2012-2020 in the management area.
 
 
 \newpage
-### Stratification, salinity
-```{r, fig.align="center", echo = FALSE, fig.pos='H',fig.width=11.7, fig.height=6.3, fig.cap="Stratification and salinity (ppt) for the ESS from 1970-2018. Dashed lines denote long-term means, solid green lines denote ± standard deviation (SD) from the available timeseries. Purple, shaded areas represent the latest 5 years of available, robust data. Yellow and blue dots are measurements above or below the long-term means, respectively."}
-dat.dir<-here::here("data")
+### Salinity, Stratification
+[Layton et al. 2025](https://publications.gc.ca/collections/collection_2025/mpo-dfo/Fs97-18-403-eng.pdf) (see Section 9)
+```{r, fig.align="center", echo = FALSE, fig.pos='H',fig.width=11.7, fig.height=6.3, fig.cap="Stratification and salinity (ppt) for the Scotian Shelf from 1948-2024. Dashed lines denote climatological means from 1991-2020, solid green lines denote ± standard deviation (SD) from the available timeseries. Purple, shaded areas represent the latest 5 years of available, robust data. Yellow and blue dots are measurements above or below the long-term means, respectively."}
 
-SSenv <- "SS_environmental_indicators.Rdata"
-  load(file.path(dat.dir, SSenv))
 
-Stratification<- SS_environmental_indicators |> 
-  filter(ID=="ESS") |> 
-  select(YEAR, Stratification)
+Stratification<- azmpdata::Derived_Annual_Broadscale |> 
+  filter(area=="scotian_shelf_box") |> 
+  select(year, Stratification=density_gradient_0_50)
 
-  pstrat<-plot_indicator(Stratification, YEAR, Stratification, y_label="Stratification") 
+  pstrat<-plot_indicator_ref_period(Stratification, year, Stratification, y_label="Stratification") 
   
-  Salinity<- SS_environmental_indicators |> 
-  filter(ID=="ESS") |> 
-  select(YEAR, Salinity)
+  Salinity<- azmpdata::Derived_Annual_Broadscale |> 
+  filter(area=="scotian_shelf_box") |> 
+  select(year, Salinity=salinity_0)
 
-  psal<-plot_indicator(Salinity, YEAR, Salinity, y_label="Salinity (ppt)") 
+  psal<-plot_indicator_ref_period(Salinity, year, Salinity, y_label="Salinity (ppt)") 
 
-pstrat + psal 
+(psal) / (pstrat)
 
 ```
-- Salinity and stratification are currently only analysed at the larger spatial scales, and currently only reported at the level of the Eastern Scotian Shelf (NAFO 4VN, 4VS, 4W combined).
 
-- Salinity and stratification in the Eastern Scotian Shelf have been generally higher, with more years above the long-term mean in the ESS since the early 1990s. In later years (2018), both were slightly below the long-term mean, but within a normal range. These trends are consistent with SST trends for the Eastern Scotian Shelf.
+- Salinity has decreased since the 1990s with the 2024 salinity value the lowest in the last 5 years. 
+
+- Since 1948, there has been an increase in the mean stratification on the Scotian Shelf, resulting in a change in the 0–50 m density difference of 0.38 kg m−3 over 50 years. It should be noted the change over time is not linear but could consist of two periods of constant stratification with a jump around 1990. This change in mean stratification is due mainly to a decrease in the surface density, composed equally of warming and freshening. Stratification in 2023 and 2024 was higher than in 2022 due to the surface becoming warmer and saltier.
+
+- Under increased stratification there is a tendency for more primary production to be recycled within the upper mixed layer and hence less available for the deeper layers. 
+
+\newpage
+### Oceanographic measures at Prince 5 station
+[Layton et al. 2025](https://publications.gc.ca/collections/collection_2025/mpo-dfo/Fs97-18-403-eng.pdf)
+
+Temperature and salinity measurements through the water column have been sampled monthly for the most part since 1924 at Prince 5, at the entrance to the Bay of Fundy (Figure 1).
+```{r P5temp,fig.align="center", echo = FALSE, fig.width = 7,fig.pos='H', fig.cap="Prince 5 annual anomaly time series (circles connected by a thin black line) of temperature (top left) and salinity (top right) averaged from 0 to 50m, the bottom temperature (bottom left), and the stratification (bottom right) which is the density difference between 0 and 50m. The horizontal dashed green line represents the mean ± 0.5 SD (solid green line) for the 1991-2020 period."}
+
+dat.dir<-here::here("data")
+p5_temp0_50 <- "p5_temp0_50.Rdata"
+  load(file.path(dat.dir, p5_temp0_50))
+p5_temp_90 <- "p5_temp_90.Rdata"
+  load(file.path(dat.dir, p5_temp_90))
+p5_salinity <- "p5_salinity.Rdata"
+  load(file.path(dat.dir, p5_salinity))
+p5_strat<- "p5_strat.Rdata"
+  load(file.path(dat.dir, p5_strat))
+  
+  
+ pp5_salinity<-plot_indicator_ref_period_halfsd(p5_salinity, year, anomaly,  y_label = "Salinity anomaly" )
+  
+ 
+  pp5_strat<-plot_indicator_ref_period_halfsd(p5_strat, year, anomaly, y_label = "Stratification (kg m-3)" )
+    
+
+ pp5_temp0_50<-plot_indicator_ref_period_halfsd(p5_temp0_50, year, anomaly , y_label = "Temperature anomaly (0-50m)" )
+
+ 
+  pp5_temp_90<-plot_indicator_ref_period_halfsd(p5_temp_90, year, anomaly , y_label = "Bottom Temperature 90m (C)" )
+  
+  (pp5_temp0_50 + pp5_salinity)/ (pp5_temp_90 + pp5_strat)
+  
+```
+- Annual near surface temperatures at Prince 5 in `r max(p5_temp0_50$year, na.rm=TRUE)` is above the climatological mean (2021 was the record high). While it remained above normal, temperatures have continued to decrease from the series record high in 2021. 
+
+- Bottom temperature was near the climatological mean in `r max(p5_temp_90$year, na.rm=TRUE)` (2012 was the record high). Similar to near surface temperature, bottom conditions continue to cool from the second warmest year in 2021. 
+
+- Near surface salinity was near the climatological mean and stratification was just above the climatological mean.
 
 \newpage
 ### Ocean Acidification
 Ocean acidification is the reduction of seawater pH levels, caused by the increased rate of atmospheric carbon dioxide (CO2) release from post-industrial anthropogenic activities. In general, the ocean absorbs approximately 26% of total carbon emissions ([Friedlingstein et al. 2025](https://doi.org/10.5194/essd-17-965-2025)), thereby buffering the global climate. However the rate of CO2 release from human activities is unprecedented, leading to changes in seawater chemistry, resulting in reductions of seawater pH, increased levels of CO2 in the seawater (pCO2), and reducing the saturation state and therefore biological availability of important shell-forming calcium carbonate minerals (aragonite and calcite).
 
-Galbraith *et al.* 2025 (in press)
+[Galbraith *et al.* 2025](https://publications.gc.ca/collections/collection_2025/mpo-dfo/Fs97-18-400-eng.pdf)
 
-```{r ,fig.align="center", echo = FALSE, fig.pos='H',fig.width = 8, out.width="80%",fig.pos='H', fig.cap="Time series of near-bottom water annual averages for: in situ pHT (pH on the total scale, upper left panel); substrate-inhibitor ratio (SIR in mol µmol-1, upper right panel); saturation state of aragonite (ΩA - unitless, lower left panel); and saturation state of calcite (ΩC - unitless, lower right panel) at stations ˃ 100 m in depth, at AZMP sections in the Maritimes regions from 2014 to 2024. A grey cell indicates missing data; a white cell is a value within 0.5 SD of the climatological mean based on data from 2014 to 2020 inclusively; a red cell indicates above normal values; a blue cell indicates below normal values. More intense colors indicate larger anomalies. Climatological means and standard deviations are shown on the right side of each panel. Boxes with borders (either dark grey or white) in the substrate-inhibitor ratio, saturation state of aragonite and saturation state of calcite panels correspond to values at or below the thresholds of 0.1, 1 and 1, respectively. Near-bottom values represent the deepest observations."}
+```{r ,fig.align="center", echo = FALSE, fig.pos='H',fig.width = 9, out.width="100%",fig.pos='H', fig.cap="Time series of near-bottom water annual averages for: in situ pHT (pH on the total scale, upper left panel); substrate-inhibitor ratio (SIR in mol µmol-1, upper right panel); saturation state of aragonite (ΩA - unitless, lower left panel); and saturation state of calcite (ΩC - unitless, lower right panel) at stations ˃ 100 m in depth, at AZMP sections in the Maritimes regions from 2014 to 2024. A grey cell indicates missing data; a white cell is a value within 0.5 SD of the climatological mean based on data from 2014 to 2020 inclusively; a red cell indicates above normal values; a blue cell indicates below normal values. More intense colors indicate larger anomalies. Climatological means and standard deviations are shown on the right side of each panel. Boxes with borders (either dark grey or white) in the substrate-inhibitor ratio, saturation state of aragonite and saturation state of calcite panels correspond to values at or below the thresholds of 0.1, 1 and 1, respectively. Near-bottom values represent the deepest observations."}
 
 knitr::include_graphics(here("figures", "OA Maritimes.png"))
 ```
-- The Atlantic Canadian surface seawater is declining faster than the global average by 0.03-0.04 units per decade compared to 0.017-0.027 ([Bernier et al. 2023](https://publications.gc.ca/collections/collection_2023/mpo-dfo/Fs97-6-3544-eng.pdf)). The 2020-2024 period of AZMP data shows that the annual averages of near-bottom seawater pH has been mostly below normal to normal for the NAFO 4 region, with record lows of total pH (pHT), observed for the 4V Louisbourg region in 2022.
+- The Atlantic Canadian surface seawater pH is declining faster than the global average by 0.03-0.04 units per decade compared to 0.017-0.027 ([Bernier et al. 2023](https://publications.gc.ca/collections/collection_2023/mpo-dfo/Fs97-6-3544-eng.pdf)). The 2020-2024 period of AZMP data shows that the annual averages of near-bottom seawater pH has been mostly below normal to normal for the NAFO 4 region, with record lows of total pH (pHT), observed for the `r (area)` (`r (azmpline)`) region in 2023.
 
 - Overall there is a trend of normal to deteriorating ocean acidification conditions in near-bottom waters in the Atlantic Zone since 2020 (as demonstrated by pHT, saturation states of calcium carbonate and substrate inhibitor ratios). 
 
-- For many Atlantic clam species (e.g. *Mactromeris polynyma*) shells are predominantly composed of aragonite, therefore if ocean acidification conditions continue to increase then there may be impacts to the recruitment and growth rates of this species; surface seawater pH monitoring would help assess larval exposure conditions.    
+- For many invertebrates with shells that are predominantly composed of aragonite, may experience impacts to recruitment and growth rates if ocean acidification conditions continue to increase (Ω between 1.0-2.0). In this case, surface seawater pH monitoring would help assess larval exposure conditions.    
 
 \newpage
 ## Longer-term climate change 
@@ -303,7 +418,7 @@ knitr::include_graphics(here("figures", "SSPs_2040P_change_annual.png"))
 
 - Projected changes in sea surface temperature (2040-2059 relative to present day) for the Scotian Shelf and Gulf of Maine range from approximately 1.5 to 2.5°C (based on IPCC scenarios SSP2-4.5 to SSP5-8.5) ([Wang et al, 2024](https://www.tandfonline.com/doi/full/10.1080/07055900.2023.2264832)).  
 
-- With a rapidly changing ocean, we can expect shifts in productivity and distribution in the NAFO 4VS, as well as shifts in the seasonal timing of fish and invertebrate reproductive cycles.
+- With a rapidly changing ocean, we can expect shifts in productivity and distribution in the `r (area)`, as well as shifts in the seasonal timing of fish and invertebrate reproductive cycles.
 
 - By 2100, under both low and high emissions scenario, most marine species across the Canadian portion of the NW Atlantic are from moderate to high climate risk, and indeed, are at a lower risk compared to many areas around the globe, especially tropical ecosystems. While the NW Atlantic is warming rapidly, the resident species are, on average, widespread across the seascape, and are accustomed to a wider range of temperatures ([Boyce et al. 2024](https://www.nature.com/articles/s44183-024-00067-5)). 
 
@@ -318,16 +433,16 @@ Commercial fishing is an activity that impacts the ecology of a management area 
 
 ### Main Fisheries
 
-[NAFO STATLAN21A database](https://www.nafo.int/Data/STATLANT-21A)
+[NAFO STATLAN21A database](https://www.nafo.int/Data/STATLANT-21A) with additional Canadian lobster landings from MARFIS.
 
-```{r ,fig.align="center", echo = FALSE,fig.pos='H', fig.pos='H',fig.width=11.7, fig.height=8.3, fig.cap="Main fisheries in NAFO 4VS by landings from all countries from 1960-2023."}
+```{r ,fig.align="center", echo = FALSE,fig.pos='H', fig.pos='H',fig.width=11.7, fig.height=8.3, fig.cap="Main fisheries in the management area by landings from all countries from 1960-2023."}
 
 dat.dir<-here::here("data")
-NAFO_STATLAN21A <- "NAFO_STATLAN21A.Rdata"
-load(file.path(dat.dir, NAFO_STATLAN21A))
+NAFO_STATLANT21A <- "NAFO_STATLANT21A.Rdata"
+load(file.path(dat.dir, NAFO_STATLANT21A))
 
-top5_landings <- NAFO_STATLAN21A |> 
-  filter(Division == "4VS") |>
+top5_landings <- NAFO_STATLANT21A |> 
+  filter(Division == "4X") |>
   rename(YEAR = Year, species_name = `Species Name`, weight_mt = `Metric Tonnes`) |>
   group_by(YEAR, species_name) |>
   summarize(weight_mt = sum(weight_mt, na.rm = TRUE), .groups = "drop") |>
@@ -353,14 +468,15 @@ p5fisheries<-ggplot(top5_landings, aes(x = as.factor(YEAR), y = weight_mt, fill 
 p5fisheries
 
 ```
-- The five main fisheries in the NAFO 4VS area in 2023 were Surf clam, Atlantic redfishes, clams, shrimp (northern prawn), Atlantic halibut. 
+- The five main fisheries in the `r (area)` area in 2024 are American lobster, Atlantic herring, haddock, pollock, Atlantic redfishes.
 
+\newpage
 ### Fishing Pressure
 [Bundy et al. 2017](https://publications.gc.ca/site/eng/9.845487/publication.html) (see Table S4 for definitions, see Table S5 for species categories)
 
 This indicator measures the level of exploitation or total fishing pressure at the ecosystem level (Landings/Biomass). Change in this indicator can result from change in biomass, landings or both. 
 
-```{r ,fig.align="center", echo = FALSE,fig.pos='H', fig.pos='H', fig.cap="Fishing Pressure (FP) calculated from DFO Summer Research Vessel survey. Data have been corrected for catchability with the exception of invertebrates. Dashed lines denote long-term means, solid green lines denote ± standard deviation (SD) from the available timeseries. Purple, shaded areas represent the latest 5 years of available, robust data. Yellow and blue dots are measurements above or below the long-term means, respectively."}
+```{r ,fig.align="center", echo = FALSE,fig.pos='H', fig.pos='H', fig.cap="Fishing Pressure (FP) calculated from commercial catch data and biomass estimates from the DFO Summer Research Vessel survey. RV biomass data have been corrected for catchability with the exception of invertebrates. Dashed lines denote long-term means, solid green lines denote ± standard deviation (SD) from the available timeseries. Purple, shaded areas represent the latest 5 years of available, robust data. Yellow and blue dots are measurements above or below the long-term means, respectively."}
 
 dat.dir<-here::here("data")
 eco_indicators<- "eco_indicators_nafo.Rdata"
@@ -370,23 +486,27 @@ eco_indicators<-eco_indicators_nafo #might be a marindicators relic that names i
   
 #filter relevant data sets
 fp_all<-eco_indicators |> 
-  filter(ID=="4VS", YEAR<2021) |> 
-  mutate_all(~ifelse(YEAR == 2018, NA, .)) |> #no RV survey in 2018 in ESS
+  filter(ID=="4X", YEAR<2023) |> 
+  mutate_all(~ifelse(YEAR == 2018, NA, .)) |>
+   mutate_all(~ifelse(YEAR == 2021, NA, .)) |>#no RV survey in 2018 in ESS
         select(YEAR,FP_ALL) 
 
 fp_forage<-eco_indicators |> 
-  filter(ID=="4VS", YEAR<2021) |> 
+  filter(ID=="4X", YEAR<2023) |> 
   mutate_all(~ifelse(YEAR == 2018, NA, .)) |>
+   mutate_all(~ifelse(YEAR == 2021, NA, .)) |>
         select(YEAR, FP_FORAGE)
 
 fp_gadoids<-eco_indicators |>
-  filter(ID=="4VS", YEAR<2021)|>
+  filter(ID=="4X", YEAR<2023)|>
   mutate_all(~ifelse(YEAR == 2018, NA, .)) |>
+   mutate_all(~ifelse(YEAR == 2021, NA, .)) |>
         select(YEAR, FP_GADOIDS)
 
 fp_inv<-eco_indicators |>
-  filter(ID=="4VS", YEAR<2021)|>
+  filter(ID=="4X", YEAR<2023)|>
   mutate_all(~ifelse(YEAR == 2018, NA, .)) |>
+   mutate_all(~ifelse(YEAR == 2021, NA, .)) |>
         select(YEAR,FP_INVERTEBRATES) #filter weird FP_invert value for 2021=166 all biomass estimates are low so filtered 2021 out
 
 
@@ -403,11 +523,11 @@ pa4<-plot_indicator(fp_inv, YEAR, FP_INVERTEBRATES, y_label="Invertebrate FP")
 
 ```
 
-- The 2018 fishing pressures (removed to better reflect the long-term means) are artificially high due to the lack of Summer Research Vessel survey in NAFO 4VS for that year, while landings remained stable.
+- The 2018 and 2021 fishing pressures (removed to better reflect the long-term means) are artificially high due to the lack of Summer Research Vessel survey in `r (area)` for that year, while landings remained stable.
 
-- The latest robust estimates of overall fishing pressure in NAFO 4VS (2020) has been below the long-term average since around 1995. 
+- The latest robust estimates of overall fishing pressure in `r (area)` (2022) is below the long-term mean, but in 2019-2020 the fishing pressure was high due to low biomass estimates for forage fish species in those years.
 
-- Fishing pressure on gadoids and forage fish in NAFO 4VS have been below the long-term mean since the 1990s. In contrast, fishing pressure on invertebrates has been close to the long-term average in recent years.
+- Fishing pressure on gadoids and forage fish in `r (area)` have been generally below the long-term mean since 2005. In contrast, fishing pressure on invertebrates has been close to the long-term average in recent years.
 
 \newpage
 ### Commercial Landings
@@ -422,20 +542,20 @@ eco_indicators<- "eco_indicators_nafo.Rdata"
 eco_indicators<-eco_indicators_nafo #might be a marindicators relic that names it all Indicators
 
 land_ind<-eco_indicators |> 
-  filter(ID=="4VS") |> 
+  filter(ID=="4X") |> 
         select(YEAR,landings_ALL, landings_FORAGE.L, landings_GADOIDS.L, landings_INVERTEBRATES.L) |> 
   pivot_longer(c(landings_ALL, landings_FORAGE.L, landings_GADOIDS.L, landings_INVERTEBRATES.L))
 
 land_inv<-eco_indicators |> 
-  filter(ID=="4VS") |> 
+  filter(ID=="4X") |> 
         select(YEAR, landings_INVERTEBRATES.L)
   
     land_for<-eco_indicators |> 
-  filter(ID=="4VS" ) |> 
+  filter(ID=="4X" ) |> 
         select(YEAR, landings_FORAGE.L)
     
       land_gad<-eco_indicators |> 
-  filter(ID=="4VS" ) |> 
+  filter(ID=="4X" ) |> 
         select(YEAR, landings_GADOIDS.L)
 
 pb1<-plot_multiple_indicators(land_ind, YEAR, value, name, y_label = "Landings (kg)", legend_labels = c("All", "Forage", "Gadoids", "Inverts"))
@@ -455,40 +575,9 @@ pb1/pb2/pb3/pb4
 
 - Invertebrates landings have been increasing over time, but have been in decreasing over the last 5 years (yet remain above the long-term mean). These trends coincide with shifting availability of species in the area. 
 
-\newpage
 ## Habitat 
+*in development*
 
-### Depth above 100 fathoms
-```{r, fig.align="center", echo = FALSE, fig.pos='H',fig.cap ="Surfclam assessment areas (red lines) within NAFO 4VS and bathymetries for the ESS. Black lines indicate depth < 100 fathoms."}
-dat.dir<-here::here("data")
-bathy<- "bathy_sf.rda"
-coast<-"coast_sf.rda"
-sclam<-"Areas_Surfclam_sf.rda"
-  
-load(file.path(dat.dir, bathy))
-load(file.path(dat.dir, coast))
-load(file.path(dat.dir, sclam))
-  
-
-bbox_coords <- c(xmin = -62, xmax = -48, ymin = 42, ymax = 48)
-
-
-
-pbathy<-ggplot() +
-     geom_sf(data=mar_nafo4VS, color="blue")+
-  geom_sf(data = subset(bathy, Z < 100), color="black")+
-   geom_sf(data = Areas_Surfclam_sf, alpha = 0, color="red")+
-  geom_sf(data = coast, fill="wheat")+
-    coord_sf(xlim = c(bbox_coords["xmin"], bbox_coords["xmax"]),
-           ylim = c(bbox_coords["ymin"], bbox_coords["ymax"]),
-           expand = FALSE) +
-  theme_light()
-  
-pbathy
-
-```
-
-\newpage
 ## Productivity 
 Productivity relates to the amount of energy or biomass generated in an ecosystem, providing energy to consumers. A number of factors play a role in primary and secondary production including nitrate, chlorophyll, bloom statistics, *Calanus finmarchicus* biomass, and meso-zooplankton biomass.
 
@@ -499,60 +588,64 @@ Such indicators are generally coupled to timing shifts in managed stocks since t
 
  The amount of available nutrient supply for phytoplankton production is represented by surface (0-50 m) and subsurface (50-150 m) nutrient concentrations
 
-```{r fig.align="center", echo = FALSE, fig.pos='H', fig.cap="Nitrate 0-50m, Nitrate 50-150, integrated chlorophyll 1-100m from Louisburg Line (LL) that occurs within NAFO 4VS,  from 1999-2023. Dashed lines represent the mean, solid green lines denote ± standard deviation (SD). Purple, shaded areas are the latest 5 years of available data. Yellow and blue dots are measurements above or below the long-term means, respectively."}
+```{r fig.align="center", echo = FALSE, fig.pos='H', fig.cap= glue::glue("Nitrate 0-50m, Nitrate 50-150, integrated chlorophyll 1-100m from {azmpline} and {azmpstation} (dotted) that occurs within {area},  from 1999-2023. Dashed lines represent the mean, solid green lines denote ± standard deviation (SD). Purple, shaded areas are the latest 5 years of available data. Yellow and blue dots are measurements above or below the long-term means, respectively.")}
 # dat.dir<-here::here("data")
 # AZMP_nutrients<- "AZMP_nutrients.Rdata"
 #   load(file.path(dat.dir, AZMP_nutrients))
   
    
    nitrate_0_50<-azmpdata::Derived_Annual_Sections |>
-        filter (section=="LL") |>
+        filter (section=="BBL") |>
         select(year, integrated_nitrate_0_50)
    
     nitrate_50_150<-azmpdata::Derived_Annual_Sections |>
-        filter (section=="LL") |>
+        filter (section=="BBL") |>
         select(year, integrated_nitrate_50_150)
 
     PP_ind<- azmpdata::Derived_Annual_Sections|>
-        filter( section =="LL")|>
+        filter( section =="BBL")|>
         select(year, integrated_chlorophyll_0_100)  
-
+    PP_p5<-azmpdata::Derived_Annual_Stations |> 
+      filter (station=="P5") |> 
+       select(year, chl=integrated_chlorophyll_0_100)
 
 ph3<-plot_indicator(nitrate_0_50, year, integrated_nitrate_0_50, y_label="Nitrate 0-50m")
 ph4<-plot_indicator(nitrate_50_150, year, integrated_nitrate_50_150, y_label="Nitrate 50-150m")
-ph1<-plot_indicator(PP_ind, year, integrated_chlorophyll_0_100, y_label="Integrated chl 0-100m")
+ph1<-plot_indicator(PP_ind, year, integrated_chlorophyll_0_100, y_label="Integrated chl 0-100m")+
+  geom_point(data=PP_p5, aes(x=year, y=chl), color="navyblue") +
+    geom_path(data = PP_p5, aes(x = year, y = chl), linetype = "dotted", color = "black")
 
 (ph3/ph4/ph1)
 
 ```
 
-- The latest year (2023) of nitrate values show a decrease from the previous year, but both are within the mean range. 
+- The latest year (2024) of nitrate values in `r (area)` (`r (azmpline)`) show a decrease from the previous year in surface nitrate (0-50), but only a slight increase in nitrate at 50-100m.
 
-- Integrated chlorophyll has increased in 2023, and also remains within the mean range. 
+- Integrated chlorophyll has increased in 2024 in `r (area)`, and also remains within the mean range. 
 
 - Although recent warming would suggest a shift to higher nutrient concentrations across the Scotian Shelf (SS) region, recent evaluation of the long-term trends in nutrient availability across the SS has actually shown a decrease in nutrient availability since 2010, the onset of this warming period.
 
 ### Bloom statistics
 [Casault et al. 2022](https://publications.gc.ca/collections/collection_2022/mpo-dfo/fs70-5/Fs70-5-2022-018-eng.pdf)
 
-```{r fig.align="center", echo = FALSE, fig.pos='H',fig.cap="Bloom statistics,for the ESS subregion (see Casault et al. 2022, Figure 4). Dashed lines representent the mean, solid green lines denote ± standard deviation (SD) . Purple, shaded areas are the latest 5 years of available data. Yellow and blue dots are measurements above or below the long-term means, respectively."}
+```{r fig.align="center", echo = FALSE, fig.pos='H',fig.cap= glue::glue("Bloom statistics,for {area} subregion (see Casault et al. 2022, Figure 4). Dashed lines representent the mean, solid green lines denote ± standard deviation (SD) . Purple, shaded areas are the latest 5 years of available data. Yellow and blue dots are measurements above or below the long-term means, respectively.")}
 azmpdata::RemoteSensing_Annual_Broadscale
 
   
    BS_ind<-RemoteSensing_Annual_Broadscale|>
-        filter(area=="ESS_remote_sensing")|>
+        filter(area=="WSS_remote_sensing")|>
         select(YEAR=year, bloom_start)
    
    BD_ind<-RemoteSensing_Annual_Broadscale|>
-        filter(area=="ESS_remote_sensing")|>
+        filter(area=="WSS_remote_sensing")|>
         select(YEAR=year, bloom_duration)
    
   BA_ind<-RemoteSensing_Annual_Broadscale|>
-        filter(area=="ESS_remote_sensing")|>
+        filter(area=="WSS_remote_sensing")|>
         select(YEAR=year, bloom_amplitude)
       
   BM_ind<-RemoteSensing_Annual_Broadscale|>
-        filter(area=="ESS_remote_sensing")|>
+        filter(area=="WSS_remote_sensing")|>
         select(YEAR=year, bloom_magnitude)
    
 pbs<-plot_indicator(BS_ind, YEAR, bloom_start, y_label="Bloom start")
@@ -563,36 +656,35 @@ pbm<-plot_indicator(BM_ind, YEAR, bloom_magnitude, y_label="Bloom magnitude")
 (pbs/pbd)|(pba/pbm)
 
 ```
-- In the Eastern Scotian Shelf bloom statistics are within the long-term mean range for the latest year (2020), and show no long-term or short term (5 year) trend over time. 
+- In the `r (area)` area bloom statistics are within the long-term mean range for the latest year (2020), and show no long-term or short term (5 year) trend over time. 
 
 ### *Calanus finmarchicus*, meso-zooplankton Biomass
-```{r fig.align="center", echo = FALSE,fig.pos='H', fig.cap="Zooplankton biomass (dry weight), from NAFO 4V. Dashed lines represent the mean, solid green lines denote ± standard deviation (SD). Purple, shaded areas are the latest 5 years of available data.Yellow and blue dots are measurements above or below the long-term means, respectively. "}
+```{r fig.align="center", echo = FALSE,fig.pos='H', fig.cap="Zooplankton biomass (dry weight). Dashed lines represent the mean, solid green lines denote ± standard deviation (SD). Purple, shaded areas are the latest 5 years of available data.Yellow and blue dots are measurements above or below the long-term means, respectively. "}
 azmpdata::Zooplankton_Seasonal_Broadscale
  
-   CF_ind_4V<-Zooplankton_Seasonal_Broadscale|>
-        filter(area=="4V")|>
+   CF_ind<-Zooplankton_Seasonal_Broadscale|>
+        filter(area=="4X")|>
         select(YEAR=year, Calanus_finmarchicus)
    
   
-  ZP_ind_4V<-Zooplankton_Seasonal_Broadscale|>
-        filter(area=="4V")|>
+  ZP_ind<-Zooplankton_Seasonal_Broadscale|>
+        filter(area=="4X")|>
         select(YEAR=year, Zooplankton_Biomass=zooplankton_meso_dry_weight)
   
   
    
-pcf4v<-plot_indicator(CF_ind_4V, YEAR, Calanus_finmarchicus, y_label="4V C. finmarchicus")
-pzp4v<-plot_indicator(ZP_ind_4V, YEAR, Zooplankton_Biomass, y_label="4V meso-zooplankton")   
+pcf<-plot_indicator(CF_ind, YEAR, Calanus_finmarchicus, y_label="C. finmarchicus")
+pzp<-plot_indicator(ZP_ind, YEAR, Zooplankton_Biomass, y_label="Meso-zooplankton")   
 
 
-(pcf4v/pzp4v)
+(pcf/pzp)
 ```
-- The most recent estimates (2023) *C. finmarchicus* biomass in NAFO 4V has been lower than the long-term average.
+- The most recent estimates (2024) *C. finmarchicus* biomass in `r (area)` has been lower than the previous year. There has been more years of lower than average *C.finmarchicus* biomass since 2015. 
 
-- Most recent estimates of zooplankton biomass remain close to average since 2019 in NAFO 4V.
+- Most recent 5 year estimates of meso-zooplankton biomass have been decreasing and in 2024 are at the lower end of the long-term mean.
 
 \newpage
 ### Large Fish Indicator (LFI)
-
 [Bundy et al. 2017](https://publications.gc.ca/site/eng/9.845487/publication.html) (see Table S4 for definitions and details)
 
 LFI is an estimate of the proportion of large fish in the community or proportion of biomass occupying the top predator trophic-level ([Greenstreet and Rogers 2006](https://academic.oup.com/icesjms/article/63/4/573/690519#139793319)). 
@@ -604,8 +696,9 @@ eco_indicators<- "eco_indicators_nafo.Rdata"
   
   
 LFI<-eco_indicators_nafo |>
-  filter(ID=="4VS", YEAR<2021)|>
+  filter(ID=="4X", YEAR<2023)|>
   mutate_all(~ifelse(YEAR == 2018, NA, .)) |>
+   mutate_all(~ifelse(YEAR == 2021, NA, .)) |>
         select(YEAR, LargeFishIndicator)
 
   
@@ -614,7 +707,9 @@ pLFI<-MAReco::plot_indicator(LFI, YEAR, LargeFishIndicator, y_label="Large Fish 
 (pLFI)
 ```
 
-- LFI in the NAFO 4VS area has varied over time across two periods pre and post the mid 1990s. Latest four years indicate that LFI is below the long-term mean and indicate that structure and functioning of NAFO 4VS ecosystem may currently be more dominated by smaller fish and invertebrates in the ecological community. 
+- Data for 2018 and 2021 not shown due to lack of RV survey data for the `r (area)` area.
+
+- LFI in the `r (area)` area has varied over time. Latest 10 years indicate that LFI is below the long-term mean and indicate that structure and functioning of `r (area)` ecosystem may currently be more dominated by smaller fish and invertebrates in the ecological community. 
 
 
 ### Predator index
@@ -638,18 +733,21 @@ eco_indicators<- "eco_indicators_nafo.Rdata"
   eco_indicators<-eco_indicators_nafo
   
  Shannondiversity<-eco_indicators |>
-  filter(ID=="4VS", YEAR<2021 & YEAR>2000)|>
-   mutate_all(~ifelse(YEAR == 2018, NA, .)) |> #removed because RV survey didn't run in ESS for 2018
+  filter(ID=="4X", YEAR<2023 & YEAR>2000)|>
+   mutate_all(~ifelse(YEAR == 2018, NA, .)) |> #removed because RV survey issues 
+    mutate_all(~ifelse(YEAR == 2021, NA, .)) |> #remove because of RV survey issues
         select(YEAR, ShannonDiversity_ALL)
  
  Heips<-eco_indicators |>
-  filter(ID=="4VS",YEAR<2021)|>
+  filter(ID=="4X",YEAR<2023)|>
    mutate_all(~ifelse(YEAR == 2018, NA, .)) |>
+    mutate_all(~ifelse(YEAR == 2021, NA, .)) |>
         select(YEAR, Heips_ALL)
  
   Margalef<-eco_indicators|>
-  filter(ID=="4VS", YEAR<2021 & YEAR>2000)|>
+  filter(ID=="4X", YEAR<2023 & YEAR>2000)|>
     mutate_all(~ifelse(YEAR == 2018, NA, .)) |>
+     mutate_all(~ifelse(YEAR == 2021, NA, .)) |>
         select(YEAR, MargalefRichness_ALL)
 
   
@@ -665,15 +763,15 @@ eco_indicators<- "eco_indicators_nafo.Rdata"
   
 ```
  
-- Anomalous low values in 2018 are due to lack of RV survey data for the NAFO 4VS, and have been removed.  
+- Data for 2018 and 2021 not shown due to lack of RV survey data for the `r (area)` area 
 
-- Biodversity measures through time in the NAFO 4VS indicate that the NAFO 4VS is currently generally composed of fewer dominant species. While improving sampling protocols in the RV surveys have increased Margalef Richness over the last 5 years, the species diversity has been lower (lower mean range) in the last 5 years. Heips evenness has been relatively low since the 2000s, the low values (<0.2) is consistent with a community with generally fewer, species that are highly abundant. 
+- Biodiversity measures through time in the `r (area)` area indicate that `r (area)` is currently generally composed of fewer dominant species. While improving sampling protocols in the RV surveys have increased Margalef Richness over the last 5 years, the species diversity has been lower (lower mean range) in the last 5 years. Heips evenness has been low since the 2000s, the low values (<0.2) is consistent with a community with generally fewer, species that are highly abundant. 
 
 ### Guild-level Biomass
 
 [Bundy et al. 2017](https://publications.gc.ca/site/eng/9.845487/publication.html) (see Table S4 for definitions, see Table S5 for species categories)
 
-Guild-level biomasses address structural attributes of food webs, and can also serve as proxies for ecosystem functioning ([Tam et al. 2017](https://academic.oup.com/icesjms/article/74/7/2040/2970046)).This indicator includes multiple guilds for fish and invertebrates from the RV Survey.
+Guild-level biomasses address structural attributes of food webs, and can also serve as proxies for ecosystem functioning ([Tam et al. 2017](https://academic.oup.com/icesjms/article/74/7/2040/2970046)). This indicator includes multiple guilds for fish and invertebrates from the RV Survey.
 
 ```{r fig.align="center", echo = FALSE, fig.pos='H', fig.height=8, fig.width=10, fig.cap="Total biomass and guild-level biomasses for fish catagories from DFO's Summer RV survey which have been corrected for catchability. Invertebrate estimates are not corrected for catchability. Dashed lines represent the mean, solid green lines denote ± standard deviation (SD). Purple, shaded areas are the latest 5 years of available data.Yellow and blue dots are measurements above or below the long-term means, respectively."}
 dat.dir<-here::here("data")
@@ -683,28 +781,32 @@ eco_indicators<- "eco_indicators_nafo.Rdata"
 eco_indicators<-eco_indicators_nafo
 
   bio_ind<-eco_indicators |> 
-  filter(ID=="4VS", YEAR<2021) |> 
+  filter(ID=="4X", YEAR<2023) |> 
         select(YEAR,BIOMASS_ALL, BIOMASS_FORAGE, BIOMASS_GADOIDS, BIOMASS_INVERTEBRATES) |> 
     mutate_all(~ifelse(YEAR == 2018, NA, .)) |>
+     mutate_all(~ifelse(YEAR == 2021, NA, .)) |>
   pivot_longer(c(BIOMASS_ALL, BIOMASS_FORAGE, BIOMASS_GADOIDS, BIOMASS_INVERTEBRATES)) 
   
   bio_inv<-eco_indicators |>
-  filter(ID=="4VS", YEAR<2021 & YEAR>1999)|>
+  filter(ID=="4X", YEAR<2023 & YEAR>1999)|>
     mutate_all(~ifelse(YEAR == 2018, NA, .)) |>
+     mutate_all(~ifelse(YEAR == 2021, NA, .)) |>
         select(YEAR, BIOMASS_INVERTEBRATES)
   
     bio_for<-eco_indicators |>
-  dplyr::filter(ID=="4VS", YEAR<2021 )|>
+  dplyr::filter(ID=="4X", YEAR<2023 )|>
      mutate_all(~ifelse(YEAR == 2018, NA, .)) |>
+       mutate_all(~ifelse(YEAR == 2021, NA, .)) |>
       dplyr::  select(YEAR, BIOMASS_FORAGE)
     
       bio_gad<-eco_indicators |>
-  filter(ID=="4VS", YEAR<2021 )|>
+  filter(ID=="4X", YEAR<2023)|>
     mutate_all(~ifelse(YEAR == 2018, NA, .)) |>
+         mutate_all(~ifelse(YEAR == 2021, NA, .)) |>
         select(YEAR, BIOMASS_GADOIDS)
       
   #           bio_ground<-eco_indicators |>
-  # filter(ID=="4VS", YEAR<2021 )|>
+  # filter(ID=="4X", YEAR<2021 )|>
   #   mutate_all(~ifelse(YEAR == 2018, NA, .)) |>
   #       select(YEAR, BIOMASS_GROUNDFISH)
   #   
@@ -722,21 +824,21 @@ eco_indicators<-eco_indicators_nafo
 pi1/pi2/pi3/pi4
   
 ```
-- Anomalous low values in 2018 are due to lack of RV survey data for the NAFO 4VS, and have been removed. 
+- Data for 2018 and 2021 not shown due to lack of RV survey data for the `r (area)` area. 
 
 - Generally, due to low catchability of invertebrates in the RV survey, invertebrates are likely underestimated, but trends are considered reliable.
 
-- Total biomass of all commercial fish species combined are generally decreasing over the last 5 years, with both invertebrates and forage fish experiencing decreases in the most recent year. 
+- Total biomass of all fish species combined are at a historical low over the last 5 years, with both invertebrates and forage fish experiencing decreases in the most recent year. 
 
-- Since the collapse of gadoids in the lates 1980s and early 1990s, biomass has been low. It increased to vary around the long-term mean from the mid 2000s to mid 2010s, but has declined since.
+- Gadoids have remained relatively stable since the 1970s in `r (area)`, with the most recent value (2022) well above the long-term mean.
 
-- Forage fish have been relatively stable in the NAFO 4VS with annual biomass within or above the long-term mean since the mid-1980s. In the last couple years forage fish biomass has been close to the long-term mean.
+- Forage fish in `r (area)` have been generally decreasing since the 1990s, with values below the long-term average over the lastest 5 years.
 
 ## Non-Target Species 
 
 *In development*
 
-\newpage
+
 # C. Economic {#economic}
 
 ## Commercial Fishery
@@ -745,18 +847,18 @@ Commercial fishing is an important activity in the Maritimes Region that provide
 
 ### Landed value (CAD) by species catagory
 
-This is the landed value of groups of species for the NAFO 4VS region. Exploration of this data was based on published overviews of Canadian [Seafisheries landings](https://www.dfo-mpo.gc.ca/stats/commercial/sea-maritimes-eng.htm).
+This is the landed value of groups of species for the `r (area)` region. Exploration of this data was based on published overviews of Canadian [Seafisheries landings](https://www.dfo-mpo.gc.ca/stats/commercial/sea-maritimes-eng.htm).
 
-```{r fig.align="center", echo = FALSE,fig.width = 10,fig.pos='H', fig.cap="Landed value of species categories since 1990 for NAFO 4VS. Area in purple is preliminary data and subject to change." }
+```{r fig.align="center", echo = FALSE,fig.width = 10,fig.pos='H', fig.cap= glue::glue("Landed value of species categories since 1990 for {area}. Area in purple is preliminary data and subject to change.")}
 dat.dir<-here::here("data")
 MAR_Landings_Value<- "MAR_Landings_Value_sp.Rdata"
   load(file.path(dat.dir, MAR_Landings_Value))
   
 Landings_value<-MAR_Landings_Value_sp |>
-  filter(ID=="4VS")|>
+  filter(ID=="4X")|>
         select(YEAR, Species_Category, Landed_Value_CAD)
 
-# ess_lv<-MAR_Landings_Value_sp |> filter(ID %in% c("4VN", "4VS", "4W")) |> group_by(YEAR, Species_Category) |> summarise(Landed_weight_KG=sum(Landed_weight_KG),Landed_Value_CAD=sum(Landed_Value_CAD)) |> mutate(ID="ESS")
+# ess_lv<-MAR_Landings_Value_sp |> filter(ID %in% c("4VN", "4X", "4W")) |> group_by(YEAR, Species_Category) |> summarise(Landed_weight_KG=sum(Landed_weight_KG),Landed_Value_CAD=sum(Landed_Value_CAD)) |> mutate(ID="ESS")
    # wss_lv<-MAR_Landings_Value_sp |> filter(ID %in% c("4X", "5Y", "5ZE")) |> group_by(YEAR, Species_Category) |> summarise(Landed_weight_KG=sum(Landed_weight_KG),Landed_Value_CAD=sum(Landed_Value_CAD)) |> mutate(ID="WSS")   
 # save(MAR_Landings_Value, file="data/MAR_Landings_Value.Rdata")
 
@@ -779,9 +881,9 @@ plv<- MAReco::plot_multiple_indicators(Landings_value, YEAR, Landed_Value_CAD, S
   
 ```
 
-- Historical trends indicate that groundfish had higher landed value in the 1990s than mollusc and crustaceans or pelagic and estuarial fish in the NAFO 4VS, but recent landings are dominated by mollusc and crustaceans. 
+- Historical trends indicate that molluscs and crustaceans have had higher landed values since the 1990s than groundfish or pelagic and estuarial fish in the `r (area)` region.
 
-- In the last 5 years, the landed value of mollusc and crustaceans in NAFO 4VS have fluctuated while still remaining high. Although conservation concerns for many invertebrate species is low, variability in landed value could have impacts to coastal communities. In contrast, recent 5 year landed values of groundfish and pelagic groups have remained stable in the NAFO 4VS. 
+- In the last 5 years, the landed value of mollusc and crustaceans in `r (area)` have fluctuated while still remaining high. Although conservation concerns for many invertebrate species is low, variability in landed value could have impacts to coastal communities. In contrast, recent 5 year landed values of groundfish and pelagic groups have remained stable in the `r (area)`. 
 
 # D. Social-Cultural
 
