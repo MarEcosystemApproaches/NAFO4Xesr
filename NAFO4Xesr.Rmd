@@ -285,7 +285,7 @@ pbottomt4X
 \newpage
 ### Sea Surface Temperature (SST), Bottom Temperature
 [Casault et al. 2020](https://casaultb.github.io/azmpdata/)
-```{r, echo = FALSE, fig.align="center", fig.height=8,fig.width=10, fig.pos='H', fig.cap=glue::glue("Sea Surface Temperature from satellite and Bottom temperature from fixed stations for {area}. Dashed lines denote climatological means from 1991-2020, solid green lines denote ± standard deviation (SD) from the available timeseries. Purple, shaded areas represent the latest 5 years of available, robust data. Yellow and blue dots are measurements above or below the long-term means, respectively.")}
+```{r, echo = FALSE, fig.align="center", fig.height=8,fig.width=10, fig.pos='H', fig.cap=glue::glue("Sea Surface Temperature from satellite and Bottom temperature from fixed stations for {area}. Dashed lines denote climatological means from 1991-2020, solid green lines denote ± standard deviation (SD) from the available timeseries. Purple, shaded areas represent the latest 5 years of available, robust data. Yellow and blue dots are measurements above or below the long-term means ± SD , respectively.")}
   
 
   SST_ind_4X<-azmpdata::Derived_Annual_Broadscale |>
@@ -325,7 +325,7 @@ pbt_4X<-plot_indicator_ref_period(BottomT_ind_4X, YEAR, Bottom_Temp, y_label="4X
 \newpage
 ### Salinity, Stratification
 [Layton et al. 2025](https://publications.gc.ca/collections/collection_2025/mpo-dfo/Fs97-18-403-eng.pdf) (see Section 9)
-```{r, fig.align="center", echo = FALSE, fig.pos='H',fig.width=11.7, fig.height=6.3, fig.cap="Stratification and salinity (ppt) for the Scotian Shelf from 1948-2024. Dashed lines denote climatological means from 1991-2020, solid green lines denote ± standard deviation (SD) from the available timeseries. Purple, shaded areas represent the latest 5 years of available, robust data. Yellow and blue dots are measurements above or below the long-term means, respectively."}
+```{r, fig.align="center", echo = FALSE, fig.pos='H',fig.width=11.7, fig.height=6.3, fig.cap="Stratification and salinity (ppt) for the Scotian Shelf from 1948-2024. Dashed lines denote climatological means from 1991-2020, solid green lines denote ± standard deviation (SD) from the available timeseries. Purple, shaded areas represent the latest 5 years of available, robust data. Yellow and blue dots are measurements above or below the long-term means ± SD, respectively."}
 
 
 Stratification<- azmpdata::Derived_Annual_Broadscale |> 
@@ -416,7 +416,7 @@ knitr::include_graphics(here("figures", "SSPs_2040P_change_annual.png"))
 
 - In the Scotian Shelf by 2050, the onset of spring is expected to occur 3-4 weeks earlier than present day and the growing season is expected to last 4-6 weeks longer ([Brickman & Shackell, 2024](https://online.ucpress.edu/elementa/article/12/1/00001/203135)) 
 
-- Projected changes in sea surface temperature (2040-2059 relative to present day) for the Scotian Shelf and Gulf of Maine range from approximately 1.5 to 2.5°C (based on IPCC scenarios SSP2-4.5 to SSP5-8.5) ([Wang et al, 2024](https://www.tandfonline.com/doi/full/10.1080/07055900.2023.2264832)).  
+- Projected changes in sea surface temperature (2040-2049 relative to present day) for the Scotian Shelf and Gulf of Maine range from approximately 1.5 to 2.5°C (based on IPCC scenarios SSP2-4.5 to SSP5-8.5) ([Wang et al, 2024](https://www.tandfonline.com/doi/full/10.1080/07055900.2023.2264832)).  
 
 - With a rapidly changing ocean, we can expect shifts in productivity and distribution in the `r (area)`, as well as shifts in the seasonal timing of fish and invertebrate reproductive cycles.
 
@@ -476,7 +476,7 @@ p5fisheries
 
 This indicator measures the level of exploitation or total fishing pressure at the ecosystem level (Landings/Biomass). Change in this indicator can result from change in biomass, landings or both. 
 
-```{r ,fig.align="center", echo = FALSE,fig.pos='H', fig.pos='H', fig.cap="Fishing Pressure (FP) calculated from commercial catch data and biomass estimates from the DFO Summer Research Vessel survey. RV biomass data have been corrected for catchability with the exception of invertebrates. Dashed lines denote long-term means, solid green lines denote ± standard deviation (SD) from the available timeseries. Purple, shaded areas represent the latest 5 years of available, robust data. Yellow and blue dots are measurements above or below the long-term means, respectively."}
+```{r ,fig.align="center", echo = FALSE,fig.pos='H', fig.pos='H', fig.cap="Fishing Pressure (FP) calculated from commercial catch data and biomass estimates from the DFO Summer Research Vessel survey. RV biomass data have been corrected for catchability with the exception of invertebrates. Dashed lines denote long-term means, solid green lines denote ± standard deviation (SD) from the available timeseries. Purple, shaded areas represent the latest 5 years of available, robust data. Yellow and blue dots are measurements above or below the long-term means ± SD, respectively."}
 
 dat.dir<-here::here("data")
 eco_indicators<- "eco_indicators_nafo.Rdata"
@@ -533,7 +533,7 @@ pa4<-plot_indicator(fp_inv, YEAR, FP_INVERTEBRATES, y_label="Invertebrate FP")
 ### Commercial Landings
 [Bundy et al. 2017](https://publications.gc.ca/site/eng/9.845487/publication.html) (see Table S4 for definitions, see Table S5 for species categories)
 
-```{r, fig.align="center", echo = FALSE, fig.pos='H',fig.height=8, fig.width=10, fig.cap ="Commercial landings (kg) collected from NAFO, ZIF and MARFIS databases for species categories. Dashed lines represent the mean, solid green lines denote ± standard deviation (SD). Purple, shaded areas are the latest 5 years of available data. Yellow and blue dots are measurements above or below the long-term means, respectively."}
+```{r, fig.align="center", echo = FALSE, fig.pos='H',fig.height=8, fig.width=10, fig.cap ="Commercial landings (kg) collected from NAFO, ZIF and MARFIS databases for species categories. Dashed lines represent the mean, solid green lines denote ± standard deviation (SD). Purple, shaded areas are the latest 5 years of available data. Yellow and blue dots are measurements above or below the long-term means ± SD, respectively."}
 
 dat.dir<-here::here("data")
 eco_indicators<- "eco_indicators_nafo.Rdata"
@@ -575,8 +575,14 @@ pb1/pb2/pb3/pb4
 
 - Invertebrates landings have been increasing over time, but have been in decreasing over the last 5 years (yet remain above the long-term mean). These trends coincide with shifting availability of species in the area. 
 
+\newpage
 ## Habitat 
-*in development*
+[Murphy et al. 2024](https://esajournals.onlinelibrary.wiley.com/doi/full/10.1002/ecs2.4964) for methodology and details
+```{r cumulativeimpacts,fig.align="center", echo = FALSE, fig.pos='H',fig.width = 8, out.width="80%",fig.pos='H', fig.cap=glue::glue("Mean impact scores in {area} of individual stressors to habitats. Stressors are ranked from highest mean cumulative impact score across all habitats (top) to lowest (bottom) and colored based on sector. Mean impact score color gradient is based on 10 Jenks natural breaks. Gray cells indicate an impact score of zero, indicating either no spatial overlap for the habitat–stressor combination or a vulnerability score of zero for the habitat–stressor combination. Symbols represent habitat zones. Habitat abbreviations: ALGAL, algal zone; BITDL, beach; CYN, canyon; DPBIO, deep biogenic; DPELAGIC, deep pelagic; HDEEP, hard bottom bathyal; HMUSSEL, horse mussel bioherm; HSHLF, hard bottom shelf; HSHLW, nearshore hard bottom; KELP, kelp forest; MDEEP, mixed bottom bathyal; MFITDL, mudflat intertidal; MSHLF, mixed bottom shelf; MSHLW, nearshore mixed bottom; RITDL, rocky intertidal; SALTMARSH, saltmarsh; SDEEP, soft bottom bathyal; SEAG, seagrass; SPELAGIC, shallow pelagic; SSHLF, soft bottom shelf; SSHLW, nearshore soft bottom.")}
+
+knitr::include_graphics(here("figures", "NAFO4X_CI.png"))
+```
+- Contributions of individual stressors to CIs varied among habitats temperature changes, ocean acidification, and fishing pressures have a higher impact on the offshore habitats. 
 
 ## Productivity 
 Productivity relates to the amount of energy or biomass generated in an ecosystem, providing energy to consumers. A number of factors play a role in primary and secondary production including nitrate, chlorophyll, bloom statistics, *Calanus finmarchicus* biomass, and meso-zooplankton biomass.
@@ -588,7 +594,7 @@ Such indicators are generally coupled to timing shifts in managed stocks since t
 
  The amount of available nutrient supply for phytoplankton production is represented by surface (0-50 m) and subsurface (50-150 m) nutrient concentrations
 
-```{r fig.align="center", echo = FALSE, fig.pos='H', fig.cap= glue::glue("Nitrate 0-50m, Nitrate 50-150, integrated chlorophyll 1-100m from {azmpline} and {azmpstation} (dotted) that occurs within {area},  from 1999-2023. Dashed lines represent the mean, solid green lines denote ± standard deviation (SD). Purple, shaded areas are the latest 5 years of available data. Yellow and blue dots are measurements above or below the long-term means, respectively.")}
+```{r fig.align="center", echo = FALSE, fig.pos='H', fig.cap= glue::glue("Nitrate 0-50m, Nitrate 50-150, integrated chlorophyll 1-100m from {azmpline} and {azmpstation} (dotted) that occurs within {area},  from 1999-2023. Dashed lines represent the mean, solid green lines denote ± standard deviation (SD). Purple, shaded areas are the latest 5 years of available data. Yellow and blue dots are measurements above or below the long-term means ± SD, respectively.")}
 # dat.dir<-here::here("data")
 # AZMP_nutrients<- "AZMP_nutrients.Rdata"
 #   load(file.path(dat.dir, AZMP_nutrients))
@@ -628,7 +634,7 @@ ph1<-plot_indicator(PP_ind, year, integrated_chlorophyll_0_100, y_label="Integra
 ### Bloom statistics
 [Casault et al. 2022](https://publications.gc.ca/collections/collection_2022/mpo-dfo/fs70-5/Fs70-5-2022-018-eng.pdf)
 
-```{r fig.align="center", echo = FALSE, fig.pos='H',fig.cap= glue::glue("Bloom statistics,for {area} subregion (see Casault et al. 2022, Figure 4). Dashed lines representent the mean, solid green lines denote ± standard deviation (SD) . Purple, shaded areas are the latest 5 years of available data. Yellow and blue dots are measurements above or below the long-term means, respectively.")}
+```{r fig.align="center", echo = FALSE, fig.pos='H',fig.cap= glue::glue("Bloom statistics,for {area} subregion (see Casault et al. 2022, Figure 4). Dashed lines representent the mean, solid green lines denote ± standard deviation (SD) . Purple, shaded areas are the latest 5 years of available data. Yellow and blue dots are measurements above or below the long-term means ± SD, respectively.")}
 azmpdata::RemoteSensing_Annual_Broadscale
 
   
@@ -659,7 +665,7 @@ pbm<-plot_indicator(BM_ind, YEAR, bloom_magnitude, y_label="Bloom magnitude")
 - In the `r (area)` area bloom statistics are within the long-term mean range for the latest year (2020), and show no long-term or short term (5 year) trend over time. 
 
 ### *Calanus finmarchicus*, meso-zooplankton Biomass
-```{r fig.align="center", echo = FALSE,fig.pos='H', fig.cap="Zooplankton biomass (dry weight). Dashed lines represent the mean, solid green lines denote ± standard deviation (SD). Purple, shaded areas are the latest 5 years of available data.Yellow and blue dots are measurements above or below the long-term means, respectively. "}
+```{r fig.align="center", echo = FALSE,fig.pos='H', fig.cap="Zooplankton biomass (dry weight). Dashed lines represent the mean, solid green lines denote ± standard deviation (SD). Purple, shaded areas are the latest 5 years of available data.Yellow and blue dots are measurements above or below the long-term means ± SD, respectively. "}
 azmpdata::Zooplankton_Seasonal_Broadscale
  
    CF_ind<-Zooplankton_Seasonal_Broadscale|>
@@ -689,7 +695,7 @@ pzp<-plot_indicator(ZP_ind, YEAR, Zooplankton_Biomass, y_label="Meso-zooplankton
 
 LFI is an estimate of the proportion of large fish in the community or proportion of biomass occupying the top predator trophic-level ([Greenstreet and Rogers 2006](https://academic.oup.com/icesjms/article/63/4/573/690519#139793319)). 
 
-```{r fig.align="center", echo = FALSE,fig.pos='H',fig.width = 5, fig.height=3, fig.cap="Large fish indicator from RV survey data that has been corrected for catchability. Dashed lines represent the mean, solid green lines denote ± standard deviation (SD). Purple, shaded areas are the latest 5 years of available data. Yellow and blue dots are measurements above or below the long-term means, respectively."}
+```{r fig.align="center", echo = FALSE,fig.pos='H',fig.width = 5, fig.height=3, fig.cap="Large fish indicator from RV survey data that has been corrected for catchability. Dashed lines represent the mean, solid green lines denote ± standard deviation (SD). Purple, shaded areas are the latest 5 years of available data. Yellow and blue dots are measurements above or below the long-term means ± SD, respectively."}
 dat.dir<-here::here("data")
 eco_indicators<- "eco_indicators_nafo.Rdata"
   load(file.path(dat.dir, eco_indicators))
@@ -724,7 +730,7 @@ Biodiversity is described as the variety and variability among living organisms 
 
 Shannon Diversity Index accounts for both abundance and evenness of species present in a community. Margalef Richness measures the number of species present accounting for sampling effects. Heips Evenness measures how equally the species richness contributes to the total abundance or biomass of the community. Due to improvements in species identification over time, long-term Shannon Diversity and Margalef richness can be misleading, only years 2000-2020 were used here. 
 
-```{r fig.align="center", echo = FALSE, fig.pos='H', fig.cap="Shannon diversity Index, Margalef Richness, Hieps Evenness measured from data collected from DFO's Summer RV survey and has been corrected for catchability.Dashed lines represent the mean, solid green lines denote ± standard deviation (SD). Purple, shaded areas are the latest 5 years of available data. Yellow and blue dots are measurements above or below the long-term means, respectively."}
+```{r fig.align="center", echo = FALSE, fig.pos='H', fig.cap="Shannon diversity Index, Margalef Richness, Hieps Evenness measured from data collected from DFO's Summer RV survey and has been corrected for catchability.Dashed lines represent the mean, solid green lines denote ± standard deviation (SD). Purple, shaded areas are the latest 5 years of available data. Yellow and blue dots are measurements above or below the long-term means ± SD, respectively."}
 
 dat.dir<-here::here("data")
 eco_indicators<- "eco_indicators_nafo.Rdata"
@@ -773,7 +779,7 @@ eco_indicators<- "eco_indicators_nafo.Rdata"
 
 Guild-level biomasses address structural attributes of food webs, and can also serve as proxies for ecosystem functioning ([Tam et al. 2017](https://academic.oup.com/icesjms/article/74/7/2040/2970046)). This indicator includes multiple guilds for fish and invertebrates from the RV Survey.
 
-```{r fig.align="center", echo = FALSE, fig.pos='H', fig.height=8, fig.width=10, fig.cap="Total biomass and guild-level biomasses for fish catagories from DFO's Summer RV survey which have been corrected for catchability. Invertebrate estimates are not corrected for catchability. Dashed lines represent the mean, solid green lines denote ± standard deviation (SD). Purple, shaded areas are the latest 5 years of available data.Yellow and blue dots are measurements above or below the long-term means, respectively."}
+```{r fig.align="center", echo = FALSE, fig.pos='H', fig.height=8, fig.width=10, fig.cap="Total biomass and guild-level biomasses for fish catagories from DFO's Summer RV survey which have been corrected for catchability. Invertebrate estimates are not corrected for catchability. Dashed lines represent the mean, solid green lines denote ± standard deviation (SD). Purple, shaded areas are the latest 5 years of available data.Yellow and blue dots are measurements above or below the long-term means ± SD, respectively."}
 dat.dir<-here::here("data")
 eco_indicators<- "eco_indicators_nafo.Rdata"
   load(file.path(dat.dir, eco_indicators))
