@@ -1,5 +1,5 @@
 ---
-title: " 2025 Ecosystem Summary Report pilot for NAFO 4X"
+title: " 2025 Ecosystem Summary Report for NAFO 4X"
 author: "Maritimes EBFM WG"
 date: "`r Sys.Date()`"
 output:
@@ -9,6 +9,8 @@ output:
     df_print: kable
     highlight: haddock
     latex_engine: xelatex
+    includes:
+      in_header: dfompo.tex
 linkcolor: blue    
 urlcolor: blue
 citecolor: red
@@ -581,7 +583,10 @@ pb1/pb2/pb3/pb4
 [Murphy et al. 2024](https://esajournals.onlinelibrary.wiley.com/doi/full/10.1002/ecs2.4964) for methodology and details
 ```{r cumulativeimpacts,fig.align="center", echo = FALSE, fig.pos='H',fig.width = 8, out.width="80%",fig.pos='H', fig.cap=glue::glue("Mean impact scores in {region} of individual stressors to habitats. Stressors are ranked from highest mean cumulative impact score across all habitats (top) to lowest (bottom) and colored based on sector. Mean impact score color gradient is based on 10 Jenks natural breaks. Gray cells indicate an impact score of zero, indicating either no spatial overlap for the habitat–stressor combination or a vulnerability score of zero for the habitat–stressor combination. Symbols represent habitat zones. Habitat abbreviations: ALGAL, algal zone; BITDL, beach; CYN, canyon; DPBIO, deep biogenic; DPELAGIC, deep pelagic; HDEEP, hard bottom bathyal; HMUSSEL, horse mussel bioherm; HSHLF, hard bottom shelf; HSHLW, nearshore hard bottom; KELP, kelp forest; MDEEP, mixed bottom bathyal; MFITDL, mudflat intertidal; MSHLF, mixed bottom shelf; MSHLW, nearshore mixed bottom; RITDL, rocky intertidal; SALTMARSH, saltmarsh; SDEEP, soft bottom bathyal; SEAG, seagrass; SPELAGIC, shallow pelagic; SSHLF, soft bottom shelf; SSHLW, nearshore soft bottom.")}
 
-knitr::include_graphics(here("figures", "NAFO4X_CI.png"))
+knitr::include_graphics(here("figures", "CarpetPlot_NAFO 4X.png"))
+
+#NAFO4X_CI.png
+#CarpetPlot_NAFO 4X.png has standard habitats
 ```
 - Contributions of individual stressors to CIs varied among habitats temperature changes, ocean acidification, and fishing pressures have a higher impact on the offshore habitats. 
 
