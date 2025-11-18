@@ -113,13 +113,13 @@ nafomap
 This Ecosystem Summary Report provides the ecosystem context to support Fisheries and Oceans Canada's Ecosystem Approach, which includes Ecosystem Approaches to Fisheries Management ([EAFM](https://www.dfo-mpo.gc.ca/fisheries-peches/initiatives/ecosystems-approach-approche-ecosystemique/index-eng.html) [2019; Bill C-68](https://lop.parl.ca/sites/PublicWebsite/default/en_CA/ResearchPublications/LegislativeSummaries/421C68E)) and Ecosystem-Based Fisheries Management ([EBFM](https://sites.google.com/view/maritimesebfmwg/home)). It aligns objectives broadly to those of the [Maritimes Ecosystem-Based Management Framework](https://sites.google.com/view/ebminitiative/ebm-initiative-home) and regional/area-based objectives that contribute to Scientific Advice and Management Plans or other Harvest Strategies and uses a suite of indicators that are used to describe the ecosystem (Table 1). The trends and the status of ecosystem indicators are reported relative to a reference point (if available) or a long-term average. The results are synthesized to outline potential implications for the management area examined and not specifically related - but can be applied - to a focal stock or species. 
 
 # Overview {#overview}
-- The North Atlantic as a whole is experiencing a warm phase, with SST and bottom temperature above the long-term means. There has been some recent cooling in the `r (region)` region since 2022.  
+- The North Atlantic as a whole is experiencing a warm phase, with SST and bottom temperature above the long-term means. There has been some recent cooling in the `r (region)` region since 2022.
 
-- Salinity has decreased since the 1990s and mean stratification has increased on the Scotian Shelf. Nutrient availability has decreased since 2010, the onset of the latest warming period. 
+- Salinity has decreased since the 1990s and mean stratification has increased on the Scotian Shelf. Nutrient availability has decreased since 2010, the onset of the latest warming period.
 
-- Although chlorophyll is within mean range, zooplankton biomass has been below the long-term mean in recent years.
+- Although chlorophyll is within mean range, zooplankton biomass has been below the long-term mean in recent years. 
 
-- The Large Fish Indicator has been below the long term mean since 2014, indicating that structure and functioning of `r (region)` ecosystem is more dominated by smaller fish and invertebrates. Species evenness has decreased, also indicating fewer, dominant species.  Fish biomass is generally below long-term mean over the latest 5 years of data, although landings and fishing pressure have generally decreased in `r (region)` over time. 
+- The Large Fish Indicator has been below the long term mean since 2014, indicating that structure and functioning of `r (region)` ecosystem is more dominated by smaller fish and invertebrates. Species evenness has decreased, also indicating fewer, dominant species.  Fish biomass is generally below long-term mean over the latest 5 years of data, although landings and fishing pressure have generally decreased in `r (region)` over time.
 
 
 \newpage
@@ -171,7 +171,8 @@ The AMO describes long-duration changes in the sea surface temperature of the No
 
 ```{r ,fig.align="center", echo = FALSE,fig.pos='H', fig.width = 5, fig.height=3,fig.cap="Atlantic Multidecdal Oscillation (AMO), the average anomalies of SST in the North Atlantic basin."}
 
-AMO<-marea::amo
+#call data from marea
+data("amo")
 
 pamo<-plot(amo, style="anomaly")+
   labs(
@@ -190,13 +191,13 @@ pamo
 
 ```{r ,fig.align="center", echo = FALSE,fig.pos='H', fig.width = 5, fig.height=3,fig.cap="The North Atlantic Oscillation (NAO) index, defined as the winter (December, January, February, March) 500 mb pressure Principal Component Analysis which is representative of the difference between the Icelandic low and Azores high. Climatological mean is shown as the dashed line, solid lines are ± standard deviation (SD)."}
 
-
-NAO<-marea::nao
+#call data from marea
+data('nao')
 
   mean_value <- 0.08
   sd_value <- 0.37
 
-  pnao<-plot(NAO) +
+  pnao<-plot(nao) +
     geom_hline(yintercept = mean_value,
         color = "darkgreen", linetype = "dashed") +
         geom_hline(yintercept = mean_value +  sd_value, color = "darkgreen") +
@@ -581,14 +582,18 @@ pb1/pb2/pb3/pb4
 \newpage
 ## Habitat 
 [Murphy et al. 2024](https://esajournals.onlinelibrary.wiley.com/doi/full/10.1002/ecs2.4964) for methodology and details
-```{r cumulativeimpacts,fig.align="center", echo = FALSE, fig.pos='H',fig.width = 8, out.width="80%",fig.pos='H', fig.cap=glue::glue("Mean impact scores in {region} of individual stressors to habitats. Stressors are ranked from highest mean cumulative impact score across all habitats (top) to lowest (bottom) and colored based on sector. Mean impact score color gradient is based on 10 Jenks natural breaks. Gray cells indicate an impact score of zero, indicating either no spatial overlap for the habitat–stressor combination or a vulnerability score of zero for the habitat–stressor combination. Symbols represent habitat zones. Habitat abbreviations: ALGAL, algal zone; BITDL, beach; CYN, canyon; DPBIO, deep biogenic; DPELAGIC, deep pelagic; HDEEP, hard bottom bathyal; HMUSSEL, horse mussel bioherm; HSHLF, hard bottom shelf; HSHLW, nearshore hard bottom; KELP, kelp forest; MDEEP, mixed bottom bathyal; MFITDL, mudflat intertidal; MSHLF, mixed bottom shelf; MSHLW, nearshore mixed bottom; RITDL, rocky intertidal; SALTMARSH, saltmarsh; SDEEP, soft bottom bathyal; SEAG, seagrass; SPELAGIC, shallow pelagic; SSHLF, soft bottom shelf; SSHLW, nearshore soft bottom.")}
+```{r cumulativeimpacts,fig.align="center", echo = FALSE, fig.pos='H',fig.width = 8, out.width="80%",fig.pos='H', fig.cap=glue::glue("Mean impact scores in {region} of 45 individual stressors to 21 habitats. Stressors are ranked from highest mean cumulative impact score across all habitats (top) to lowest (bottom) and colored based on sector. Mean impact score color gradient is based on 10 Jenks natural breaks. Gray cells indicate an impact score of zero, indicating either no spatial overlap for the habitat–stressor combination or a vulnerability score of zero for the habitat–stressor combination. Symbols represent habitat zones. Habitat abbreviations: ALGAL, algal zone; BITDL, beach; CYN, canyon; DPBIO, deep biogenic; DPELAGIC, deep pelagic; HDEEP, hard bottom bathyal; HMUSSEL, horse mussel bioherm; HSHLF, hard bottom shelf; HSHLW, nearshore hard bottom; KELP, kelp forest; MDEEP, mixed bottom bathyal; MFITDL, mudflat intertidal; MSHLF, mixed bottom shelf; MSHLW, nearshore mixed bottom; RITDL, rocky intertidal; SALTMARSH, saltmarsh; SDEEP, soft bottom bathyal; SEAG, seagrass; SPELAGIC, shallow pelagic; SSHLF, soft bottom shelf; SSHLW, nearshore soft bottom.")}
 
-knitr::include_graphics(here("figures", "CarpetPlot_NAFO 4X.png"))
+knitr::include_graphics(here("figures", "CarpetPlot_NAFO_4X.png"))
 
 #NAFO4X_CI.png
 #CarpetPlot_NAFO 4X.png has standard habitats
 ```
-- Contributions of individual stressors to CIs varied among habitats temperature changes, ocean acidification, and fishing pressures have a higher impact on the offshore habitats. 
+- Of the 45 stressors in `r(region)`, the highest mean impact scores across habitats are: Bottom Temp Change, Acidification, Commercial Fishing: Bottom Otter Trawl, Invasive Species, and Surface Temperature Change. All stressors have at least some impact except for Danish or Scottish seine.
+
+- The Shelf habitats and Shallow Pelagic habitat have the highest cumulative impact (i.e. sum of all individual stressor impact scores) scores in `r(region)` 
+
+- The high impact scores in shelf and deep-water habitats are primarily driven by climate change and commercial fishing stressors, while the coastal habitats are influenced by activities from all 5 sectors.  
 
 ## Productivity 
 Productivity relates to the amount of energy or biomass generated in an ecosystem, providing energy to consumers. A number of factors play a role in primary and secondary production including nitrate, chlorophyll, bloom statistics, *Calanus finmarchicus* biomass, and meso-zooplankton biomass.
