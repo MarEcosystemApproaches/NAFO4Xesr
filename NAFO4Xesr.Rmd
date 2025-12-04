@@ -110,7 +110,7 @@ nafomap
 # Introduction {#introduction}
 
 ### About this report
-This Ecosystem Summary Report provides the ecosystem context to support Fisheries and Oceans Canada's Ecosystem Approach, which includes Ecosystem Approaches to Fisheries Management ([EAFM](https://www.dfo-mpo.gc.ca/fisheries-peches/initiatives/ecosystems-approach-approche-ecosystemique/index-eng.html) [2019; Bill C-68](https://lop.parl.ca/sites/PublicWebsite/default/en_CA/ResearchPublications/LegislativeSummaries/421C68E)) and Ecosystem-Based Fisheries Management ([EBFM](https://sites.google.com/view/maritimesebfmwg/home)). It aligns objectives broadly to those of the [Maritimes Ecosystem-Based Management Framework](https://sites.google.com/view/ebminitiative/ebm-initiative-home) and regional/area-based objectives that contribute to Scientific Advice and Management Plans or other Harvest Strategies and uses a suite of indicators that are used to describe the ecosystem (Table 1). The trends and the status of ecosystem indicators are reported relative to a reference point (if available) or a long-term average. The results are synthesized to outline potential implications for the management area examined and not specifically related - but can be applied - to a focal stock or species. 
+This Ecosystem Summary Report provides the ecosystem context to support Fisheries and Oceans Canada's Ecosystem Approach, which includes Ecosystem Approaches to Fisheries Management ([EAFM](https://www.dfo-mpo.gc.ca/fisheries-peches/initiatives/ecosystems-approach-approche-ecosystemique/index-eng.html) [2019; Bill C-68](https://lop.parl.ca/sites/PublicWebsite/default/en_CA/ResearchPublications/LegislativeSummaries/421C68E)) and Ecosystem-Based Fisheries Management ([EBFM](https://sites.google.com/view/maritimesebfmwg/home)). It aligns objectives broadly to those of the [Maritimes Ecosystem-Based Management Framework](https://waves-vagues.dfo-mpo.gc.ca/library-bibliotheque/41300907.pdf) and regional/area-based objectives that contribute to Scientific Advice and Management Plans or other Harvest Strategies and uses a suite of indicators that are used to describe the ecosystem (Table 1). The trends and the status of ecosystem indicators are reported relative to a reference point (if available) or a long-term average. The results are synthesized to outline potential implications for the management area examined and not specifically related - but can be applied - to a focal stock or species. 
 
 # Overview {#overview}
 - The North Atlantic as a whole is experiencing a warm phase, with SST and bottom temperature above the long-term means. There has been some recent cooling in the `r (region)` region since 2022.
@@ -589,9 +589,9 @@ knitr::include_graphics(here("figures", "CarpetPlot_NAFO_4X.png"))
 #NAFO4X_CI.png
 #CarpetPlot_NAFO 4X.png has standard habitats
 ```
-- Of the 45 stressors in `r(region)`, the highest mean impact scores across habitats are: Bottom Temp Change, Acidification, Commercial Fishing: Bottom Otter Trawl, Invasive Species, and Surface Temperature Change. All stressors have at least some impact except for Danish or Scottish seine.
+- Of the 45 stressors in `r (region)`, the highest mean impact scores across habitats are: Bottom Temp Change, Acidification, Commercial Fishing: Bottom Otter Trawl, Invasive Species, and Surface Temperature Change. All stressors have at least some impact except for Danish or Scottish seine.
 
-- The Shelf habitats and Shallow Pelagic habitat have the highest cumulative impact (i.e. sum of all individual stressor impact scores) scores in `r(region)` 
+- The Shelf habitats and Shallow Pelagic habitat have the highest cumulative impact (i.e. sum of all individual stressor impact scores) scores in `r (region)` 
 
 - The high impact scores in shelf and deep-water habitats are primarily driven by climate change and commercial fishing stressors, while the coastal habitats are influenced by activities from all 5 sectors.  
 
